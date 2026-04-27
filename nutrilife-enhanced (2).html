@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriLife — Eat Well. Live Better. Feel Amazing.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --green: #1a4a2e;
+    --green-light: #2d6b47;
+    --green-pale: #e8f5ee;
+    --cream: #f9f4ec;
+    --gold: #f5a623;
+    --gold-dark: #d4891a;
+    --white: #ffffff;
+    --text: #2c2c2c;
+    --text-muted: #666;
+    --border: #e0d9cf;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Lato', sans-serif; color: var(--text); background: var(--cream); overflow-x: hidden; }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    background: transparent; transition: background 0.3s, box-shadow 0.3s;
+    padding: 1.2rem 2rem;
+  }
+  nav.scrolled { background: var(--green); box-shadow: 0 2px 20px rgba(0,0,0,0.2); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); font-weight: 700; text-decoration: none; }
+  .logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.95rem; font-weight: 400; letter-spacing: 0.03em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: white; transition: 0.3s; }
+  .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--green); z-index: 999; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: white; text-decoration: none; font-size: 1.5rem; font-family: 'Playfair Display', serif; }
+  .close-menu { position: absolute; top: 1.5rem; right: 2rem; font-size: 2rem; color: white; cursor: pointer; background: none; border: none; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0d2b1a 0%, #1a4a2e 40%, #2d6b47 70%, #1a4a2e 100%);
+    position: relative; overflow: hidden; text-align: center; padding: 2rem;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(245,166,35,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
+  }
+  .hero-bg-circles { position: absolute; inset: 0; overflow: hidden; }
+  .hero-bg-circles::before {
+    content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04); top: -100px; right: -100px;
+  }
+  .hero-bg-circles::after {
+    content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%;
+    border: 1px solid rgba(245,166,35,0.1); bottom: -50px; left: -50px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; animation: fadeUp 1s ease both; }
+  .hero-badge { display: inline-block; background: rgba(245,166,35,0.2); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); color: white; line-height: 1.15; margin-bottom: 1.5rem; }
+  .hero h1 span { color: var(--gold); font-style: italic; }
+  .hero p { font-size: 1.2rem; color: rgba(255,255,255,0.75); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; font-weight: 300; }
+  .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn { padding: 0.9rem 2.2rem; border-radius: 50px; font-size: 1rem; font-weight: 700; text-decoration: none; cursor: pointer; border: none; transition: all 0.25s; font-family: 'Lato', sans-serif; display: inline-block; }
+  .btn-primary { background: var(--gold); color: #1a1a1a; }
+  .btn-primary:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,166,35,0.4); }
+  .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.4); }
+  .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+  .hero-stats { display: flex; gap: 3rem; justify-content: center; margin-top: 4rem; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); font-weight: 700; }
+  .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .section-tag { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--green); font-weight: 700; margin-bottom: 0.75rem; display: block; }
+  .section-header h2 { font-size: clamp(2rem, 4vw, 3rem); color: var(--green); margin-bottom: 1rem; }
+  .section-header p { color: var(--text-muted); max-width: 560px; margin: 0 auto; line-height: 1.7; }
+  .divider { width: 50px; height: 3px; background: var(--gold); margin: 1rem auto; border-radius: 2px; }
+
+  /* ABOUT */
+  #about { background: white; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text h2 { font-size: 2.5rem; color: var(--green); margin-bottom: 1.5rem; }
+  .about-text p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .value-card { background: var(--cream); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; border: 1px solid var(--border); transition: transform 0.25s, box-shadow 0.25s; }
+  .value-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(26,74,46,0.1); }
+  .value-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .value-card h3 { font-size: 1.1rem; color: var(--green); margin-bottom: 0.5rem; }
+  .value-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* RECIPES */
+  #recipes { background: var(--cream); }
+  .filter-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .filter-btn { padding: 0.5rem 1.4rem; border-radius: 50px; border: 2px solid var(--green); background: transparent; color: var(--green); font-family: 'Lato', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .filter-btn.active, .filter-btn:hover { background: var(--green); color: white; }
+  .recipes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 2rem; }
+  .recipe-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.25s, box-shadow 0.25s; }
+  .recipe-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(26,74,46,0.12); }
+  .recipe-thumb { background: var(--green-pale); height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+  .recipe-body { padding: 1.5rem; }
+  .recipe-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .tag { font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tag-vegan { background: #e8f5ee; color: var(--green); }
+  .tag-protein { background: #fff3e0; color: #e65100; }
+  .tag-gf { background: #f3e5f5; color: #6a1b9a; }
+  .tag-keto { background: #e3f2fd; color: #0d47a1; }
+  .recipe-body h3 { font-size: 1.3rem; color: var(--green); margin-bottom: 0.5rem; }
+  .recipe-body p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .recipe-meta { display: flex; gap: 1.5rem; }
+  .recipe-meta span { font-size: 0.85rem; color: var(--text-muted); }
+  .recipe-meta strong { color: var(--green); }
+
+  /* BLOG */
+  #blog { background: white; }
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 2rem; }
+  .blog-card { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--cream); transition: transform 0.25s, box-shadow 0.25s; }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,74,46,0.1); }
+  .blog-thumb { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+  .blog-thumb.gut { background: #e8f5ee; }
+  .blog-thumb.fitness { background: #fff3e0; }
+  .blog-thumb.mental { background: #f3e5f5; }
+  .blog-thumb.weight { background: #e3f2fd; }
+  .blog-body { padding: 1.25rem; }
+  .blog-category { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.25rem 0.75rem; border-radius: 50px; display: inline-block; margin-bottom: 0.75rem; }
+  .cat-gut { background: #e8f5ee; color: var(--green); }
+  .cat-fitness { background: #fff3e0; color: #e65100; }
+  .cat-mental { background: #f3e5f5; color: #6a1b9a; }
+  .cat-weight { background: #e3f2fd; color: #0d47a1; }
+  .blog-body h3 { font-size: 1.15rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.4; }
+  .blog-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .blog-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; }
+  .read-more { font-size: 0.9rem; color: var(--green); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--gold); padding-bottom: 1px; }
+
+  /* BMI CALCULATOR */
+  #bmi { background: var(--cream); }
+  .bmi-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .bmi-form { background: white; border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .bmi-form h3 { font-size: 1.6rem; color: var(--green); margin-bottom: 0.5rem; }
+  .bmi-form p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label { display: block; font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 0.5rem; }
+  .form-group input { width: 100%; padding: 0.85rem 1.2rem; border: 2px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: 'Lato', sans-serif; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus { border-color: var(--green); }
+  .calc-btn { width: 100%; padding: 1rem; background: var(--green); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700; font-family: 'Lato', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .calc-btn:hover { background: var(--green-light); }
+  .bmi-result { margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; text-align: center; display: none; }
+  .bmi-result.show { display: block; }
+  .bmi-result .bmi-value { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; }
+  .bmi-result .bmi-cat { font-size: 1.1rem; font-weight: 700; margin-top: 0.25rem; }
+  .bmi-result .bmi-note { font-size: 0.85rem; margin-top: 0.5rem; }
+  .cat-underweight { background: #e3f2fd; color: #0d47a1; }
+  .cat-normal { background: #e8f5ee; color: #1b5e20; }
+  .cat-overweight { background: #fff3e0; color: #e65100; }
+  .cat-obese { background: #fce4ec; color: #b71c1c; }
+  .bmi-info { background: white; border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .bmi-info h3 { font-size: 1.4rem; color: var(--green); margin-bottom: 1.5rem; }
+  .bmi-range { display: flex; flex-direction: column; gap: 1rem; }
+  .range-item { display: flex; align-items: center; gap: 1rem; }
+  .range-color { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .range-item p { font-size: 0.9rem; color: var(--text-muted); }
+  .range-item strong { color: var(--text); }
+
+  /* SUPERFOODS */
+  #superfoods { background: white; }
+  .sf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; }
+  .sf-card { background: var(--cream); border-radius: 20px; padding: 2rem 1.5rem; text-align: center; border: 1px solid var(--border); transition: all 0.3s; cursor: default; position: relative; overflow: hidden; }
+  .sf-card:hover { background: var(--green); border-color: var(--green); }
+  .sf-card:hover .sf-emoji { transform: scale(1.15); }
+  .sf-card:hover h3, .sf-card:hover li { color: white; }
+  .sf-card:hover ul { opacity: 1; transform: translateY(0); }
+  .sf-emoji { font-size: 3rem; display: block; margin-bottom: 1rem; transition: transform 0.3s; }
+  .sf-card h3 { font-size: 1.1rem; color: var(--green); margin-bottom: 1rem; transition: color 0.3s; }
+  .sf-card ul { list-style: none; font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; transition: color 0.3s; }
+  .sf-card li { transition: color 0.3s; }
+  .sf-card li::before { content: '✓ '; color: var(--gold); }
+  .sf-card:hover li::before { color: var(--gold); }
+
+  /* MEAL PLAN */
+  #mealplan { background: var(--cream); }
+  .meal-table-wrap { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); background: white; }
+  .meal-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+  .meal-table th { background: var(--green); color: white; padding: 1rem 1.25rem; text-align: left; font-family: 'Lato', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .meal-table td { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; vertical-align: top; }
+  .meal-table tr:last-child td { border-bottom: none; }
+  .meal-table tr:nth-child(even) td { background: #fafaf8; }
+  .meal-table td:first-child { font-weight: 700; color: var(--green); }
+  .meal-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); display: block; margin-bottom: 0.2rem; }
+
+  /* TESTIMONIALS */
+  #testimonials { background: white; }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+  .testi-card { background: var(--cream); border-radius: 20px; padding: 2rem; border: 1px solid var(--border); position: relative; transition: transform 0.25s, box-shadow 0.25s; }
+  .testi-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,74,46,0.1); }
+  .testi-card::before { content: '"'; font-family: 'Playfair Display', serif; font-size: 6rem; color: var(--green-pale); position: absolute; top: -10px; left: 20px; line-height: 1; }
+  .testi-stars { color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
+  .testi-card p { color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 1.5rem; position: relative; }
+  .testi-author { display: flex; align-items: center; gap: 1rem; }
+  .testi-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .testi-name { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+  .testi-result { font-size: 0.8rem; color: var(--green); font-weight: 700; }
+
+  /* NEWSLETTER */
+  #newsletter { background: var(--green); padding: 5rem 2rem; }
+  .newsletter-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+  .newsletter-inner h2 { font-size: 2.5rem; color: white; margin-bottom: 1rem; }
+  .newsletter-inner p { color: rgba(255,255,255,0.75); margin-bottom: 2rem; }
+  .email-form { display: flex; gap: 0.75rem; max-width: 500px; margin: 0 auto; }
+  .email-form input { flex: 1; padding: 1rem 1.25rem; border-radius: 50px; border: none; font-size: 1rem; font-family: 'Lato', sans-serif; outline: none; }
+  .email-form button { padding: 1rem 1.8rem; background: var(--gold); color: #1a1a1a; border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'Lato', sans-serif; white-space: nowrap; transition: background 0.2s; }
+  .email-form button:hover { background: var(--gold-dark); }
+  .privacy-note { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 1rem; }
+
+  /* CONTACT */
+  #contact { background: var(--cream); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+  .contact-info h3 { font-size: 1.8rem; color: var(--green); margin-bottom: 1rem; }
+  .contact-info p { color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; }
+  .contact-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+  .contact-icon { width: 44px; height: 44px; background: var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .contact-item p { font-size: 0.9rem; color: var(--text-muted); }
+  .contact-item strong { color: var(--text); display: block; font-size: 0.95rem; }
+  .contact-form { background: white; border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .contact-form .form-group input, .contact-form .form-group textarea {
+    width: 100%; padding: 0.85rem 1.2rem; border: 2px solid var(--border); border-radius: 12px;
+    font-size: 1rem; font-family: 'Lato', sans-serif; outline: none; transition: border-color 0.2s; resize: vertical;
+  }
+  .contact-form .form-group textarea { height: 130px; }
+  .contact-form .form-group input:focus, .contact-form .form-group textarea:focus { border-color: var(--green); }
+  .submit-btn { width: 100%; padding: 1rem; background: var(--green); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700; font-family: 'Lato', sans-serif; cursor: pointer; transition: background 0.2s; }
+  .submit-btn:hover { background: var(--green-light); }
+
+  /* FOOTER */
+  footer { background: #0d2b1a; padding: 4rem 2rem 2rem; }
+  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand .logo { display: block; margin-bottom: 1rem; }
+  .footer-brand p { color: rgba(255,255,255,0.5); font-size: 0.9rem; line-height: 1.7; max-width: 260px; }
+  .footer-social { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+  .social-link { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.8rem; transition: all 0.2s; }
+  .social-link:hover { background: var(--gold); border-color: var(--gold); color: #1a1a1a; }
+  .footer-col h4 { font-family: 'Playfair Display', serif; color: white; font-size: 1.1rem; margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 0.65rem; }
+  .footer-col a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: rgba(255,255,255,0.35); font-size: 0.85rem; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .about-grid, .bmi-wrapper, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .values-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .email-form { flex-direction: column; }
+    .hero-stats { gap: 1.5rem; }
+  }
+
+  /* ===== PROTEIN CALCULATOR ===== */
+  #protein { background: white; }
+  .protein-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .protein-form { background: var(--cream); border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .protein-form h3 { font-size: 1.6rem; color: var(--green); margin-bottom: 0.5rem; }
+  .protein-form > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .radio-option { flex: 1; min-width: 100px; }
+  .radio-option input { display: none; }
+  .radio-option label {
+    display: block; text-align: center; padding: 0.65rem 0.5rem;
+    border: 2px solid var(--border); border-radius: 10px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 700; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .radio-option input:checked + label { border-color: var(--green); background: var(--green); color: white; }
+  .protein-result { margin-top: 1.5rem; background: var(--green); border-radius: 16px; padding: 2rem; color: white; display: none; }
+  .protein-result.show { display: block; }
+  .protein-result h4 { font-size: 1.1rem; margin-bottom: 1.25rem; opacity: 0.85; }
+  .prot-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .prot-stat { text-align: center; background: rgba(255,255,255,0.12); border-radius: 12px; padding: 1rem 0.5rem; }
+  .prot-num { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--gold); }
+  .prot-label { font-size: 0.72rem; opacity: 0.8; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .prot-tip { margin-top: 1.25rem; font-size: 0.85rem; opacity: 0.8; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1rem; }
+  .prot-food-suggestions { margin-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 1.25rem; }
+  .prot-food-suggestions h5 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 1rem; color: var(--gold); }
+  .prot-meal-row { display: flex; flex-direction: column; gap: 0.6rem; }
+  .prot-meal-card { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.85rem; }
+  .prot-meal-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .prot-meal-info { flex: 1; }
+  .prot-meal-name { font-size: 0.88rem; font-weight: 700; }
+  .prot-meal-detail { font-size: 0.75rem; opacity: 0.75; margin-top: 2px; }
+  .prot-meal-badge { background: var(--gold); color: #1a1a1a; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .protein-sources { background: var(--cream); border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .protein-sources h3 { font-size: 1.4rem; color: var(--green); margin-bottom: 1.5rem; }
+  .src-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .src-item { display: flex; align-items: center; gap: 0.85rem; background: white; border-radius: 12px; padding: 0.9rem 1rem; border: 1px solid var(--border); }
+  .src-emoji { font-size: 1.5rem; flex-shrink: 0; }
+  .src-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+  .src-protein { font-size: 0.78rem; color: var(--green); font-weight: 700; }
+
+  /* ===== SMART MEAL PLANNER ===== */
+  #smartmeal { background: var(--cream); }
+  .planner-tabs { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .planner-tab { padding: 0.55rem 1.4rem; border-radius: 50px; border: 2px solid var(--green); background: transparent; color: var(--green); font-family: 'Lato', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .planner-tab.active, .planner-tab:hover { background: var(--green); color: white; }
+  .planner-setup { background: white; border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); max-width: 700px; margin: 0 auto; }
+  .planner-setup h3 { font-size: 1.5rem; color: var(--green); margin-bottom: 0.5rem; }
+  .planner-setup > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .planner-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+  .planner-generated { display: none; }
+  .planner-generated.show { display: block; }
+  .plan-header-bar { background: var(--green); color: white; border-radius: 16px 16px 0 0; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .plan-header-bar h3 { font-size: 1.4rem; }
+  .plan-macros { display: flex; gap: 1.5rem; }
+  .plan-macro { text-align: center; }
+  .plan-macro-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); font-weight: 700; }
+  .plan-macro-label { font-size: 0.7rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.06em; }
+  .plan-days { background: white; border: 1px solid var(--border); border-top: none; border-radius: 0 0 16px 16px; overflow: hidden; }
+  .plan-day-row { border-bottom: 1px solid var(--border); }
+  .plan-day-row:last-child { border-bottom: none; }
+  .plan-day-head { background: #f8faf8; padding: 0.75rem 1.5rem; font-weight: 700; color: var(--green); font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .plan-day-head:hover { background: var(--green-pale); }
+  .plan-day-meals { display: none; padding: 1rem 1.5rem 1.25rem; }
+  .plan-day-meals.open { display: block; }
+  .plan-meal-item { display: flex; align-items: flex-start; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px dashed var(--border); }
+  .plan-meal-item:last-child { border-bottom: none; }
+  .meal-time-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: white; background: var(--green); border-radius: 6px; padding: 0.2rem 0.5rem; flex-shrink: 0; margin-top: 2px; }
+  .meal-time-badge.lunch { background: var(--gold-dark); }
+  .meal-time-badge.dinner { background: #5c3d2e; }
+  .meal-time-badge.snack { background: #6a1b9a; }
+  .plan-meal-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .plan-meal-meta { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* ===== BUDGET DIET PLANNER ===== */
+  #budget { background: white; }
+  .budget-wrapper { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-items: start; }
+  .budget-form { background: var(--cream); border-radius: 24px; padding: 2.5rem; border: 1px solid var(--border); }
+  .budget-form h3 { font-size: 1.6rem; color: var(--green); margin-bottom: 0.5rem; }
+  .budget-form > p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .budget-currency { position: relative; }
+  .budget-currency span { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--green); font-weight: 700; font-size: 1rem; }
+  .budget-currency input { padding-left: 2rem !important; }
+  .budget-result { display: none; }
+  .budget-result.show { display: block; }
+  .budget-summary { background: var(--green); border-radius: 16px; padding: 1.75rem; color: white; margin-bottom: 1.5rem; }
+  .budget-summary h4 { font-size: 1rem; opacity: 0.8; margin-bottom: 1rem; }
+  .budget-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .bstat { text-align: center; }
+  .bstat-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); font-weight: 700; }
+  .bstat-label { font-size: 0.68rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.2rem; }
+  .budget-grocery { background: white; border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+  .grocery-head { background: var(--green-pale); padding: 1rem 1.5rem; font-weight: 700; color: var(--green); font-size: 0.95rem; display: flex; justify-content: space-between; }
+  .grocery-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .grocery-item:last-child { border-bottom: none; }
+  .grocery-emoji { font-size: 1.4rem; }
+  .grocery-name { flex: 1; font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .grocery-qty { font-size: 0.82rem; color: var(--text-muted); }
+  .grocery-price { font-size: 0.9rem; font-weight: 700; color: var(--green); }
+  .budget-tip { background: #fff8e1; border: 1px solid #ffe082; border-radius: 12px; padding: 1rem 1.25rem; font-size: 0.85rem; color: #5c4300; line-height: 1.6; margin-top: 1.25rem; }
+  .budget-tip strong { display: block; margin-bottom: 0.25rem; color: #3e2c00; }
+  @media (max-width: 900px) {
+    .protein-wrapper, .budget-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+    .prot-breakdown { grid-template-columns: repeat(3,1fr); }
+    .budget-stats { grid-template-columns: repeat(2,1fr); }
+    .src-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="logo">Nutri<span>Life</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#recipes">Recipes</a></li>
+      <li><a href="#protein">Protein Calc</a></li>
+      <li><a href="#smartmeal">Meal Planner</a></li>
+      <li><a href="#budget">Budget Diet</a></li>
+      <li><a href="#bmi">BMI</a></li>
+      <li><a href="#superfoods">Superfoods</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-menu" id="closeMenu">✕</button>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#recipes" class="mobile-link">Recipes</a>
+  <a href="#blog" class="mobile-link">Health Tips</a>
+  <a href="#bmi" class="mobile-link">BMI Calculator</a>
+  <a href="#superfoods" class="mobile-link">Superfoods</a>
+  <a href="#testimonials" class="mobile-link">Stories</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg-circles"></div>
+  <div class="hero-content">
+    <span class="hero-badge">🌿 Holistic Nutrition & Wellness</span>
+    <h1>Eat Well. Live Better.<br><span>Feel Amazing.</span></h1>
+    <p>Discover science-backed nutrition advice, wholesome recipes, and personalized wellness guidance to transform your health from the inside out.</p>
+    <div class="btn-group">
+      <a href="#recipes" class="btn btn-primary">Explore Recipes</a>
+      <a href="#bmi" class="btn btn-outline">Calculate Your BMI</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Healthy Recipes</div></div>
+      <div class="stat"><div class="stat-num">120K</div><div class="stat-label">Happy Members</div></div>
+      <div class="stat"><div class="stat-num">98%</div><div class="stat-label">Success Rate</div></div>
+      <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Expert Nutritionists</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="section-tag">Our Mission</span>
+        <h2>Nourishing Lives, One Plate at a Time</h2>
+        <p>At NutriLife, we believe that food is medicine. Our team of certified nutritionists, chefs, and wellness coaches work together to create evidence-based content that makes healthy eating accessible, enjoyable, and sustainable for everyone — regardless of dietary preferences or fitness goals.</p>
+        <p>We cut through the noise of fad diets and conflicting health claims to deliver science-backed, practical guidance rooted in whole-food philosophy. Whether you're managing a health condition, training for a marathon, or simply trying to feel more energized each day, NutriLife is your trusted companion on that journey.</p>
+        <a href="#recipes" class="btn btn-primary" style="margin-top: 1rem;">Start Your Journey</a>
+      </div>
+      <div class="values-grid" style="align-content: start;">
+        <div class="value-card">
+          <span class="value-icon">🔬</span>
+          <h3>Science-Backed Nutrition</h3>
+          <p>Every recommendation is grounded in peer-reviewed research and validated by our team of registered dietitians.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🌾</span>
+          <h3>Whole Food Philosophy</h3>
+          <p>We champion minimally processed, nutrient-dense whole foods as the foundation of optimal health and vitality.</p>
+        </div>
+        <div class="value-card">
+          <span class="value-icon">🎯</span>
+          <h3>Personalized Wellness</h3>
+          <p>One size doesn't fit all. Our tools help you tailor your nutrition and lifestyle choices to your unique body and goals.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECIPES -->
+<section id="recipes">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Wholesome Cooking</span>
+      <h2>Featured Recipes</h2>
+      <div class="divider"></div>
+      <p>Explore our collection of nutritionist-approved recipes crafted to nourish your body without compromising on flavor.</p>
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" onclick="filterRecipes('all', this)">All</button>
+      <button class="filter-btn" onclick="filterRecipes('breakfast', this)">Breakfast</button>
+      <button class="filter-btn" onclick="filterRecipes('lunch', this)">Lunch</button>
+      <button class="filter-btn" onclick="filterRecipes('dinner', this)">Dinner</button>
+      <button class="filter-btn" onclick="filterRecipes('snack', this)">Snacks</button>
+    </div>
+    <div class="recipes-grid" id="recipesGrid">
+      <div class="recipe-card" data-cat="breakfast">
+        <div class="recipe-thumb">🥣</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-vegan">Vegan</span><span class="tag tag-gf">Gluten-Free</span></div>
+          <h3>Golden Turmeric Overnight Oats</h3>
+          <p>Creamy oats soaked overnight in almond milk with anti-inflammatory turmeric, warming cinnamon, and topped with fresh mango and chia seeds.</p>
+          <div class="recipe-meta"><span>⏱ <strong>10 min</strong></span><span>🔥 <strong>340 kcal</strong></span><span>💪 <strong>12g protein</strong></span></div>
+        </div>
+      </div>
+      <div class="recipe-card" data-cat="lunch">
+        <div class="recipe-thumb">🥗</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-vegan">Vegan</span><span class="tag tag-protein">High Protein</span></div>
+          <h3>Quinoa & Roasted Chickpea Power Bowl</h3>
+          <p>Fluffy quinoa topped with crispy harissa-roasted chickpeas, shredded kale, avocado, and a tahini-lemon drizzle that brings it all together.</p>
+          <div class="recipe-meta"><span>⏱ <strong>25 min</strong></span><span>🔥 <strong>480 kcal</strong></span><span>💪 <strong>22g protein</strong></span></div>
+        </div>
+      </div>
+      <div class="recipe-card" data-cat="dinner">
+        <div class="recipe-thumb">🍛</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-gf">Gluten-Free</span><span class="tag tag-protein">High Protein</span></div>
+          <h3>Baked Lemon Herb Salmon with Asparagus</h3>
+          <p>Omega-3 rich salmon fillet marinated in fresh herbs, garlic, and lemon, baked alongside crispy asparagus spears for a 30-minute weeknight dinner.</p>
+          <div class="recipe-meta"><span>⏱ <strong>30 min</strong></span><span>🔥 <strong>420 kcal</strong></span><span>💪 <strong>38g protein</strong></span></div>
+        </div>
+      </div>
+      <div class="recipe-card" data-cat="snack">
+        <div class="recipe-thumb">🧆</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-vegan">Vegan</span><span class="tag tag-gf">Gluten-Free</span></div>
+          <h3>Bliss Balls — Dark Chocolate & Almond</h3>
+          <p>No-bake energy balls made with medjool dates, raw almonds, raw cacao powder, and a pinch of sea salt. Perfect pre-workout fuel in just 15 minutes.</p>
+          <div class="recipe-meta"><span>⏱ <strong>15 min</strong></span><span>🔥 <strong>180 kcal</strong></span><span>💪 <strong>5g protein</strong></span></div>
+        </div>
+      </div>
+      <div class="recipe-card" data-cat="breakfast">
+        <div class="recipe-thumb">🥞</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-gf">Gluten-Free</span><span class="tag tag-protein">High Protein</span></div>
+          <h3>Banana Protein Pancakes</h3>
+          <p>Light, fluffy pancakes made with ripe banana, eggs, oat flour, and vanilla whey protein. Ready in 15 minutes and loaded with muscle-building nutrients.</p>
+          <div class="recipe-meta"><span>⏱ <strong>15 min</strong></span><span>🔥 <strong>310 kcal</strong></span><span>💪 <strong>28g protein</strong></span></div>
+        </div>
+      </div>
+      <div class="recipe-card" data-cat="dinner">
+        <div class="recipe-thumb">🍲</div>
+        <div class="recipe-body">
+          <div class="recipe-tags"><span class="tag tag-vegan">Vegan</span><span class="tag tag-gf">Gluten-Free</span></div>
+          <h3>Red Lentil & Coconut Dahl</h3>
+          <p>A warming, deeply spiced Indian-inspired dahl simmered with red lentils, creamy coconut milk, tomatoes, and a bloom of mustard seeds and curry leaves.</p>
+          <div class="recipe-meta"><span>⏱ <strong>35 min</strong></span><span>🔥 <strong>390 kcal</strong></span><span>💪 <strong>18g protein</strong></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Expert Insights</span>
+      <h2>Health Tips & Articles</h2>
+      <div class="divider"></div>
+      <p>Stay informed with the latest evidence-based guidance on nutrition, fitness, mental wellness, and sustainable weight management.</p>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-thumb gut">🦠</div>
+        <div class="blog-body">
+          <span class="blog-category cat-gut">Gut Health</span>
+          <h3>The Gut-Brain Connection: How Your Microbiome Affects Your Mood</h3>
+          <p>Emerging research reveals that the 38 trillion bacteria living in your gut produce neurotransmitters that directly influence anxiety, depression, and cognitive function.</p>
+          <p class="blog-meta">April 12, 2025 · 8 min read</p>
+          <a href="#" class="read-more">Read Article →</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-thumb fitness">🏋️</div>
+        <div class="blog-body">
+          <span class="blog-category cat-fitness">Fitness & Nutrition</span>
+          <h3>What to Eat Before and After a Workout for Maximum Results</h3>
+          <p>Timing your nutrition around training sessions can significantly improve performance, recovery speed, and muscle protein synthesis — here's exactly what to eat and when.</p>
+          <p class="blog-meta">March 28, 2025 · 6 min read</p>
+          <a href="#" class="read-more">Read Article →</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-thumb mental">🧘</div>
+        <div class="blog-body">
+          <span class="blog-category cat-mental">Mental Wellness</span>
+          <h3>5 Adaptogenic Herbs That Scientifically Reduce Stress and Cortisol</h3>
+          <p>Ashwagandha, rhodiola, holy basil, lion's mane, and eleuthero have all shown measurable effects on cortisol levels and stress resilience in clinical trials.</p>
+          <p class="blog-meta">March 14, 2025 · 7 min read</p>
+          <a href="#" class="read-more">Read Article →</a>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-thumb weight">⚖️</div>
+        <div class="blog-body">
+          <span class="blog-category cat-weight">Weight Management</span>
+          <h3>Why Calorie Counting Alone Doesn't Work — And What to Do Instead</h3>
+          <p>Metabolic adaptation, hormonal signals, and food quality matter far more than simple arithmetic. A functional approach to sustainable fat loss explained in plain language.</p>
+          <p class="blog-meta">February 22, 2025 · 9 min read</p>
+          <a href="#" class="read-more">Read Article →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BMI CALCULATOR -->
+<section id="bmi">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Know Your Numbers</span>
+      <h2>BMI Calculator</h2>
+      <div class="divider"></div>
+      <p>Calculate your Body Mass Index to understand where you stand and get personalized guidance for your wellness journey.</p>
+    </div>
+    <div class="bmi-wrapper">
+      <div class="bmi-form">
+        <h3>Calculate Your BMI</h3>
+        <p>Enter your height and weight to get your result instantly.</p>
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="heightInput" placeholder="e.g. 170" min="100" max="250">
+        </div>
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="weightInput" placeholder="e.g. 70" min="30" max="300">
+        </div>
+        <button class="calc-btn" onclick="calculateBMI()">Calculate BMI</button>
+        <div class="bmi-result" id="bmiResult">
+          <div class="bmi-value" id="bmiValue"></div>
+          <div class="bmi-cat" id="bmiCategory"></div>
+          <div class="bmi-note" id="bmiNote"></div>
+        </div>
+      </div>
+      <div class="bmi-info">
+        <h3>Understanding BMI Categories</h3>
+        <div class="bmi-range">
+          <div class="range-item"><div class="range-color" style="background:#1565c0"></div><p><strong>Underweight</strong> — BMI below 18.5<br>May indicate nutritional deficiency or underlying health issues. Consult a healthcare provider.</p></div>
+          <div class="range-item"><div class="range-color" style="background:#2e7d32"></div><p><strong>Normal Weight</strong> — BMI 18.5 to 24.9<br>Associated with the lowest health risks. Focus on maintaining this through balanced nutrition and activity.</p></div>
+          <div class="range-item"><div class="range-color" style="background:#e65100"></div><p><strong>Overweight</strong> — BMI 25.0 to 29.9<br>Slightly elevated risk for metabolic conditions. Lifestyle modifications can significantly reduce risks.</p></div>
+          <div class="range-item"><div class="range-color" style="background:#b71c1c"></div><p><strong>Obese</strong> — BMI 30.0 and above<br>Increased risk for diabetes, heart disease, and joint problems. Medical guidance recommended.</p></div>
+        </div>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-top:1.5rem;">⚠️ BMI is a screening tool, not a diagnostic measure. Factors like muscle mass, age, and ethnicity affect its accuracy. Always consult a healthcare professional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPERFOODS -->
+<section id="superfoods">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Nature's Power Foods</span>
+      <h2>Superfood Spotlight</h2>
+      <div class="divider"></div>
+      <p>Hover over each superfood to discover its incredible health benefits — these nutritional powerhouses deserve a place in your daily diet.</p>
+    </div>
+    <div class="sf-grid">
+      <div class="sf-card">
+        <span class="sf-emoji">🌿</span>
+        <h3>Turmeric</h3>
+        <ul>
+          <li>Potent anti-inflammatory curcumin</li>
+          <li>Supports joint & brain health</li>
+          <li>Powerful antioxidant properties</li>
+        </ul>
+      </div>
+      <div class="sf-card">
+        <span class="sf-emoji">🫙</span>
+        <h3>Chia Seeds</h3>
+        <ul>
+          <li>18g protein per 100g serving</li>
+          <li>Rich in Omega-3 fatty acids</li>
+          <li>Excellent source of soluble fiber</li>
+        </ul>
+      </div>
+      <div class="sf-card">
+        <span class="sf-emoji">🥬</span>
+        <h3>Spinach</h3>
+        <ul>
+          <li>High in iron & vitamin K</li>
+          <li>Supports eye & bone health</li>
+          <li>Nitrates boost exercise performance</li>
+        </ul>
+      </div>
+      <div class="sf-card">
+        <span class="sf-emoji">🫐</span>
+        <h3>Blueberries</h3>
+        <ul>
+          <li>Highest antioxidant of any fruit</li>
+          <li>Improves memory & cognition</li>
+          <li>Lowers blood pressure naturally</li>
+        </ul>
+      </div>
+      <div class="sf-card">
+        <span class="sf-emoji">🌾</span>
+        <h3>Quinoa</h3>
+        <ul>
+          <li>Complete protein — all 9 amino acids</li>
+          <li>Naturally gluten-free grain</li>
+          <li>Rich in magnesium & zinc</li>
+        </ul>
+      </div>
+      <div class="sf-card">
+        <span class="sf-emoji">🥑</span>
+        <h3>Avocado</h3>
+        <ul>
+          <li>Heart-healthy monounsaturated fats</li>
+          <li>Boosts nutrient absorption</li>
+          <li>Loaded with potassium & folate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEAL PLAN -->
+<section id="mealplan">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Weekly Planner</span>
+      <h2>7-Day Whole Food Meal Plan</h2>
+      <div class="divider"></div>
+      <p>A nutritionist-designed weekly plan balancing macronutrients, micronutrients, and incredible flavor — free to follow and adapt.</p>
+    </div>
+    <div class="meal-table-wrap">
+      <table class="meal-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monday</td>
+            <td><span class="meal-label">~340 kcal</span>Golden Turmeric Overnight Oats with mango</td>
+            <td><span class="meal-label">~480 kcal</span>Quinoa & Roasted Chickpea Power Bowl</td>
+            <td><span class="meal-label">~420 kcal</span>Lemon Herb Salmon with roasted asparagus</td>
+          </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td><span class="meal-label">~310 kcal</span>Banana Protein Pancakes with berries</td>
+            <td><span class="meal-label">~440 kcal</span>Grilled chicken & avocado wrap in lettuce</td>
+            <td><span class="meal-label">~390 kcal</span>Red Lentil & Coconut Dahl with brown rice</td>
+          </tr>
+          <tr>
+            <td>Wednesday</td>
+            <td><span class="meal-label">~280 kcal</span>Green smoothie bowl with granola & kiwi</td>
+            <td><span class="meal-label">~460 kcal</span>Mediterranean falafel salad with hummus</td>
+            <td><span class="meal-label">~450 kcal</span>Zucchini noodles with turkey Bolognese</td>
+          </tr>
+          <tr>
+            <td>Thursday</td>
+            <td><span class="meal-label">~320 kcal</span>Scrambled eggs with avocado on rye toast</td>
+            <td><span class="meal-label">~410 kcal</span>Black bean & sweet potato burrito bowl</td>
+            <td><span class="meal-label">~380 kcal</span>Miso-glazed cod with stir-fried bok choy</td>
+          </tr>
+          <tr>
+            <td>Friday</td>
+            <td><span class="meal-label">~300 kcal</span>Chia pudding with passion fruit & coconut</td>
+            <td><span class="meal-label">~490 kcal</span>Soba noodle salad with edamame & sesame</td>
+            <td><span class="meal-label">~430 kcal</span>Herb-roasted chicken thighs with cauliflower mash</td>
+          </tr>
+          <tr>
+            <td>Saturday</td>
+            <td><span class="meal-label">~360 kcal</span>Full veggie frittata with feta & sun-dried tomatoes</td>
+            <td><span class="meal-label">~420 kcal</span>Roasted beet & walnut grain salad</td>
+            <td><span class="meal-label">~500 kcal</span>Grass-fed beef stir-fry with broccoli & ginger</td>
+          </tr>
+          <tr>
+            <td>Sunday</td>
+            <td><span class="meal-label">~290 kcal</span>Acai bowl with granola, banana & almond butter</td>
+            <td><span class="meal-label">~450 kcal</span>Lentil soup with crusty sourdough bread</td>
+            <td><span class="meal-label">~410 kcal</span>Baked stuffed bell peppers with quinoa & herbs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- PROTEIN CALCULATOR -->
+<section id="protein">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">💪 Macronutrient Tool</span>
+      <h2>Protein Calculator</h2>
+      <div class="divider"></div>
+      <p>Find your exact daily protein target based on your body, activity level, and weight goal — including a weight-gain muscle building plan.</p>
+    </div>
+    <div class="protein-wrapper">
+      <div class="protein-form">
+        <h3>Your Protein Target</h3>
+        <p>Fill in your details to get a personalised protein breakdown.</p>
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" id="protWeight" placeholder="e.g. 65" min="30" max="200">
+        </div>
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="protHeight" placeholder="e.g. 170" min="100" max="250">
+        </div>
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" id="protAge" placeholder="e.g. 25" min="10" max="100">
+        </div>
+        <div class="form-group">
+          <label>Sex</label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="protSex" id="sexM" value="male" checked><label for="sexM">Male</label></div>
+            <div class="radio-option"><input type="radio" name="protSex" id="sexF" value="female"><label for="sexF">Female</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Activity Level</label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="protActivity" id="actSed" value="1.2" checked><label for="actSed">Sedentary</label></div>
+            <div class="radio-option"><input type="radio" name="protActivity" id="actLight" value="1.375"><label for="actLight">Light</label></div>
+            <div class="radio-option"><input type="radio" name="protActivity" id="actMod" value="1.55"><label for="actMod">Moderate</label></div>
+            <div class="radio-option"><input type="radio" name="protActivity" id="actActive" value="1.725"><label for="actActive">Active</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Goal</label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="protGoal" id="goalLose" value="lose"><label for="goalLose">Lose Fat</label></div>
+            <div class="radio-option"><input type="radio" name="protGoal" id="goalMaint" value="maintain" checked><label for="goalMaint">Maintain</label></div>
+            <div class="radio-option"><input type="radio" name="protGoal" id="goalGain" value="gain"><label for="goalGain">Gain Muscle 💪</label></div>
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calculateProtein()">Calculate My Protein</button>
+        <div class="protein-result" id="protResult">
+          <h4>Your Daily Targets</h4>
+          <div class="prot-breakdown">
+            <div class="prot-stat"><div class="prot-num" id="protGrams">—</div><div class="prot-label">Protein (g)</div></div>
+            <div class="prot-stat"><div class="prot-num" id="protCalories">—</div><div class="prot-label">Total kcal</div></div>
+            <div class="prot-stat"><div class="prot-num" id="protCarbs">—</div><div class="prot-label">Carbs (g)</div></div>
+          </div>
+          <div class="prot-tip" id="protTip"></div>
+          <div class="prot-food-suggestions" id="protFoodSuggestions" style="display:none;">
+            <h5>🍽️ Suggested Foods to Hit Your Target</h5>
+            <div class="prot-meal-row" id="protFoodList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="protein-sources">
+        <h3>Top Protein-Rich Foods</h3>
+        <div class="src-grid">
+          <div class="src-item"><span class="src-emoji">🍗</span><div><div class="src-name">Chicken Breast</div><div class="src-protein">31g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🥚</span><div><div class="src-name">Whole Eggs</div><div class="src-protein">13g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🐟</span><div><div class="src-name">Tuna (canned)</div><div class="src-protein">30g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🫘</span><div><div class="src-name">Lentils (cooked)</div><div class="src-protein">9g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🧀</span><div><div class="src-name">Paneer / Cottage Cheese</div><div class="src-protein">18g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🌾</span><div><div class="src-name">Quinoa (cooked)</div><div class="src-protein">4.4g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🥜</span><div><div class="src-name">Peanut Butter</div><div class="src-protein">25g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🍦</span><div><div class="src-name">Greek Yogurt</div><div class="src-protein">10g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🐟</span><div><div class="src-name">Salmon</div><div class="src-protein">25g per 100g</div></div></div>
+          <div class="src-item"><span class="src-emoji">🫙</span><div><div class="src-name">Chia Seeds</div><div class="src-protein">18g per 100g</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SMART MEAL PLANNER -->
+<section id="smartmeal">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">🗓️ Personalised Planning</span>
+      <h2>Smart Weight-Gain Meal Planner</h2>
+      <div class="divider"></div>
+      <p>Generate a full 7-day personalised meal plan optimised for healthy, steady weight gain with high-protein, calorie-dense whole foods.</p>
+    </div>
+    <div class="planner-setup" id="plannerSetup">
+      <h3>Personalise Your Plan</h3>
+      <p>Tell us about yourself and we'll build a 7-day weight-gain meal plan with macros.</p>
+      <div class="planner-row">
+        <div class="form-group">
+          <label>Current Weight (kg)</label>
+          <input type="number" id="planWeight" placeholder="e.g. 58">
+        </div>
+        <div class="form-group">
+          <label>Target Weight (kg)</label>
+          <input type="number" id="planTarget" placeholder="e.g. 68">
+        </div>
+      </div>
+      <div class="planner-row">
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" id="planHeight" placeholder="e.g. 175">
+        </div>
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" id="planAge" placeholder="e.g. 22">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Dietary Preference</label>
+        <div class="radio-group">
+          <div class="radio-option"><input type="radio" name="planDiet" id="dietAll" value="all" checked><label for="dietAll">Everything</label></div>
+          <div class="radio-option"><input type="radio" name="planDiet" id="dietVeg" value="veg"><label for="dietVeg">Vegetarian</label></div>
+          <div class="radio-option"><input type="radio" name="planDiet" id="dietVegan" value="vegan"><label for="dietVegan">Vegan</label></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Activity Level</label>
+        <div class="radio-group">
+          <div class="radio-option"><input type="radio" name="planAct" id="planActSed" value="1.2" checked><label for="planActSed">Sedentary</label></div>
+          <div class="radio-option"><input type="radio" name="planAct" id="planActLight" value="1.375"><label for="planActLight">Light</label></div>
+          <div class="radio-option"><input type="radio" name="planAct" id="planActMod" value="1.55"><label for="planActMod">Moderate</label></div>
+          <div class="radio-option"><input type="radio" name="planAct" id="planActAct" value="1.725"><label for="planActAct">Active</label></div>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="generateMealPlan()">Generate My 7-Day Plan 🗓️</button>
+    </div>
+    <div class="planner-generated" id="plannerGenerated">
+      <div class="plan-header-bar">
+        <h3>Your 7-Day Weight-Gain Meal Plan</h3>
+        <div class="plan-macros">
+          <div class="plan-macro"><div class="plan-macro-num" id="planKcal">—</div><div class="plan-macro-label">kcal/day</div></div>
+          <div class="plan-macro"><div class="plan-macro-num" id="planProtG">—</div><div class="plan-macro-label">Protein g</div></div>
+          <div class="plan-macro"><div class="plan-macro-num" id="planCarbG">—</div><div class="plan-macro-label">Carbs g</div></div>
+          <div class="plan-macro"><div class="plan-macro-num" id="planFatG">—</div><div class="plan-macro-label">Fat g</div></div>
+        </div>
+      </div>
+      <div class="plan-days" id="planDays"></div>
+      <div style="text-align:center; margin-top:1.5rem;">
+        <button class="calc-btn" style="max-width:240px;" onclick="resetPlan()">← Edit My Details</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUDGET DIET PLANNER -->
+<section id="budget">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">💰 Budget Nutrition</span>
+      <h2>Budget Diet Planner</h2>
+      <div class="divider"></div>
+      <p>Enter your weekly grocery budget and we'll calculate an affordable, high-protein weight-gain diet with a full shopping list and cost breakdown.</p>
+    </div>
+    <div class="budget-wrapper">
+      <div class="budget-form">
+        <h3>Set Your Budget</h3>
+        <p>We'll find the best value, most nutritious foods within your budget.</p>
+        <div class="form-group">
+          <label>Weekly Budget (₹)</label>
+          <div class="budget-currency">
+            <span>₹</span>
+            <input type="number" id="budgetAmount" placeholder="e.g. 1500" min="300" max="20000" class="form-group input" style="width:100%;padding:0.85rem 1.2rem 0.85rem 2rem;border:2px solid var(--border);border-radius:12px;font-size:1rem;font-family:'Lato',sans-serif;outline:none;transition:border-color 0.2s;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Your Goal</label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="budgetGoal" id="bgGain" value="gain" checked><label for="bgGain">Weight Gain</label></div>
+            <div class="radio-option"><input type="radio" name="budgetGoal" id="bgMaint" value="maintain"><label for="bgMaint">Maintain</label></div>
+            <div class="radio-option"><input type="radio" name="budgetGoal" id="bgLose" value="lose"><label for="bgLose">Fat Loss</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Dietary Preference</label>
+          <div class="radio-group">
+            <div class="radio-option"><input type="radio" name="budgetDiet" id="bdAll" value="all" checked><label for="bdAll">Everything</label></div>
+            <div class="radio-option"><input type="radio" name="budgetDiet" id="bdVeg" value="veg"><label for="bdVeg">Vegetarian</label></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Number of People</label>
+          <input type="number" id="budgetPeople" placeholder="e.g. 1" min="1" max="6" value="1" style="width:100%;padding:0.85rem 1.2rem;border:2px solid var(--border);border-radius:12px;font-size:1rem;font-family:'Lato',sans-serif;outline:none;transition:border-color 0.2s;">
+        </div>
+        <button class="calc-btn" onclick="calculateBudgetDiet()">Calculate My Budget Diet 💰</button>
+      </div>
+      <div class="budget-result" id="budgetResult">
+        <div class="budget-summary">
+          <h4>Weekly Budget Breakdown</h4>
+          <div class="budget-stats">
+            <div class="bstat"><div class="bstat-num" id="bTotalSpend">—</div><div class="bstat-label">Total Spend</div></div>
+            <div class="bstat"><div class="bstat-num" id="bSaved">—</div><div class="bstat-label">Savings Left</div></div>
+            <div class="bstat"><div class="bstat-num" id="bDailyCost">—</div><div class="bstat-label">Per Day</div></div>
+            <div class="bstat"><div class="bstat-num" id="bProtein">—</div><div class="bstat-label">Protein/day g</div></div>
+          </div>
+        </div>
+        <div class="budget-grocery">
+          <div class="grocery-head"><span>🛒 Weekly Shopping List</span><span id="bGroceryTotal">—</span></div>
+          <div id="groceryItems"></div>
+        </div>
+        <div class="budget-tip" id="budgetTip"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Real Stories</span>
+      <h2>Life-Changing Results</h2>
+      <div class="divider"></div>
+      <p>Thousands of people have transformed their health with NutriLife. Here's what some of them have to say.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"I've tried every diet under the sun, but NutriLife was different. The meal plans felt like real food — nothing bland or sad about it. I lost 11kg in 4 months, my energy doubled, and my cholesterol is now completely normal. My doctor was amazed."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">🙍</div>
+          <div><div class="testi-name">Priya Sharma</div><div class="testi-result">Lost 11kg in 4 months · Mumbai, India</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"As a busy father of three, I never thought I'd have time for healthy eating. NutriLife's 30-minute recipes changed everything. I reversed my pre-diabetes in 6 months, dropped 8kg, and I'm running my first half-marathon next month."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">🙍‍♂️</div>
+          <div><div class="testi-name">Rajan Mehta</div><div class="testi-result">Lost 8kg, reversed pre-diabetes · Bangalore, India</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>"The gut health articles completely changed my understanding of food. I suffered from IBS for 7 years and within 10 weeks of following the NutriLife gut-healing protocol, my symptoms reduced by over 80%. I feel like I have my life back."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">🙍</div>
+          <div><div class="testi-name">Ananya Krishnan</div><div class="testi-result">80% reduction in IBS symptoms · Chennai, India</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="newsletter-inner">
+    <span class="section-tag" style="color:var(--gold)">Free Resource</span>
+    <h2>Get Free Weekly Meal Plans</h2>
+    <p>Join 120,000+ members who receive our nutritionist-curated meal plans, seasonal recipes, and exclusive wellness tips delivered every Sunday morning.</p>
+    <div class="email-form">
+      <input type="email" id="emailInput" placeholder="Enter your email address">
+      <button onclick="handleSubscribe()">Subscribe Free</button>
+    </div>
+    <p class="privacy-note">🔒 We respect your privacy. Unsubscribe any time. No spam, ever.</p>
+    <p id="subscribeMsg" style="color:var(--gold); margin-top:1rem; font-weight:700; display:none;">✓ Welcome aboard! Check your inbox for your first meal plan.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-tag">Get In Touch</span>
+      <h2>We'd Love to Hear From You</h2>
+      <div class="divider"></div>
+      <p>Have a nutrition question, partnership inquiry, or just want to share your NutriLife success story? Reach out!</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Talk to Our Nutrition Team</h3>
+        <p>Our certified nutritionists and wellness coaches are here to answer your questions. We respond to all inquiries within 24 hours on weekdays.</p>
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div><strong>Email Us</strong><p>hello@nutrilife.com</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div><strong>Call Us</strong><p>+91 80 4567 8900</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📸</div>
+          <div><strong>Instagram</strong><p>@nutrilife.wellness</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">▶</div>
+          <div><strong>YouTube</strong><p>@NutriLifeOfficial</p></div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label>Your Name</label>
+          <input type="text" placeholder="Priya Sharma">
+        </div>
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label>Email Address</label>
+          <input type="email" placeholder="priya@email.com">
+        </div>
+        <div class="form-group" style="margin-bottom:1.25rem;">
+          <label>Subject</label>
+          <input type="text" placeholder="Nutrition question / Partnership / Feedback">
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem;">
+          <label>Message</label>
+          <textarea placeholder="Tell us how we can help..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleContact()">Send Message</button>
+        <p id="contactMsg" style="color:var(--green); margin-top:1rem; font-weight:700; display:none;">✓ Message sent! We'll reply within 24 hours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">Nutri<span>Life</span></a>
+      <p>Science-backed nutrition, whole food philosophy, and personalized wellness guidance for a healthier, happier you.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">ig</a>
+        <a href="#" class="social-link">yt</a>
+        <a href="#" class="social-link">tw</a>
+        <a href="#" class="social-link">pin</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#recipes">All Recipes</a></li>
+        <li><a href="#blog">Health Articles</a></li>
+        <li><a href="#superfoods">Superfoods</a></li>
+        <li><a href="#mealplan">Meal Plans</a></li>
+        <li><a href="#bmi">BMI Calculator</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Health Topics</h4>
+      <ul>
+        <li><a href="#">Gut Health</a></li>
+        <li><a href="#">Weight Management</a></li>
+        <li><a href="#">Mental Wellness</a></li>
+        <li><a href="#">Sports Nutrition</a></li>
+        <li><a href="#">Plant-Based Eating</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About NutriLife</a></li>
+        <li><a href="#">Our Nutritionists</a></li>
+        <li><a href="#">Press & Media</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 NutriLife. All rights reserved. | Designed with 💚 for healthier living | Content for educational purposes — consult a healthcare professional for medical advice.</p>
+  </div>
+</footer>
+
+<script>
+  // Sticky nav
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Mobile menu
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.add('open');
+  });
+  document.getElementById('closeMenu').addEventListener('click', () => {
+    document.getElementById('mobileMenu').classList.remove('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+  });
+
+  // Recipe filter
+  function filterRecipes(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.recipe-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  // BMI Calculator
+  function calculateBMI() {
+    const h = parseFloat(document.getElementById('heightInput').value);
+    const w = parseFloat(document.getElementById('weightInput').value);
+    if (!h || !w || h < 100 || w < 30) { alert('Please enter valid height (100-250 cm) and weight (30-300 kg).'); return; }
+    const bmi = (w / Math.pow(h / 100, 2)).toFixed(1);
+    const resultEl = document.getElementById('bmiResult');
+    document.getElementById('bmiValue').textContent = bmi;
+    resultEl.className = 'bmi-result show';
+    let cat, note, cls;
+    if (bmi < 18.5) { cat = 'Underweight'; note = 'Consider consulting a nutritionist to build a healthy weight-gain plan.'; cls = 'cat-underweight'; }
+    else if (bmi < 25) { cat = 'Normal Weight'; note = 'Great job! Maintain your healthy lifestyle with balanced nutrition and regular activity.'; cls = 'cat-normal'; }
+    else if (bmi < 30) { cat = 'Overweight'; note = 'Small, sustainable changes to diet and activity levels can make a big difference.'; cls = 'cat-overweight'; }
+    else { cat = 'Obese'; note = 'We recommend speaking with a healthcare professional to create a personalized health plan.'; cls = 'cat-obese'; }
+    document.getElementById('bmiCategory').textContent = cat;
+    document.getElementById('bmiNote').textContent = note;
+    resultEl.classList.add(cls);
+  }
+
+  // Newsletter
+  function handleSubscribe() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    document.getElementById('subscribeMsg').style.display = 'block';
+    document.getElementById('emailInput').value = '';
+  }
+
+  // Contact
+  function handleContact() {
+    document.getElementById('contactMsg').style.display = 'block';
+  }
+
+  // ===== PROTEIN CALCULATOR =====
+  function calculateProtein() {
+    const w = parseFloat(document.getElementById('protWeight').value);
+    const h = parseFloat(document.getElementById('protHeight').value);
+    const age = parseFloat(document.getElementById('protAge').value);
+    if (!w || !h || !age) { alert('Please fill in all fields.'); return; }
+    const sex = document.querySelector('input[name="protSex"]:checked').value;
+    const activity = parseFloat(document.querySelector('input[name="protActivity"]:checked').value);
+    const goal = document.querySelector('input[name="protGoal"]:checked').value;
+    // Mifflin-St Jeor BMR
+    let bmr = sex === 'male' ? (10*w + 6.25*h - 5*age + 5) : (10*w + 6.25*h - 5*age - 161);
+    let tdee = Math.round(bmr * activity);
+    let targetKcal = tdee, protMultiplier = 1.6;
+    let tip = '';
+    if (goal === 'gain') {
+      targetKcal = tdee + 400;
+      protMultiplier = 1.8;
+      tip = '🏋️ Weight Gain Mode: Eat ' + targetKcal + ' kcal/day in a +400 kcal surplus. Prioritise compound lifts (squats, deadlifts, bench press) 3–4×/week. Aim to gain 0.3–0.5 kg/week — any faster may add excess fat. Spread protein across 4–5 meals for optimal muscle protein synthesis.';
+    } else if (goal === 'lose') {
+      targetKcal = tdee - 400;
+      protMultiplier = 2.0;
+      tip = '🔥 Fat Loss Mode: Stay in a modest -400 kcal deficit. High protein (2.0g/kg) preserves muscle while you lose fat. Aim for 0.5–1 kg loss per week. Prioritise whole foods, fibre, and resistance training.';
+    } else {
+      tip = '⚖️ Maintenance Mode: Match your TDEE of ' + tdee + ' kcal/day. A moderate protein intake of 1.6g/kg supports muscle maintenance and recovery. Eat balanced macros and focus on food quality.';
+    }
+    const protG = Math.round(w * protMultiplier);
+    const fatG = Math.round(targetKcal * 0.25 / 9);
+    const carbG = Math.round((targetKcal - (protG * 4) - (fatG * 9)) / 4);
+    document.getElementById('protGrams').textContent = protG;
+    document.getElementById('protCalories').textContent = targetKcal;
+    document.getElementById('protCarbs').textContent = carbG;
+    document.getElementById('protTip').textContent = tip;
+
+    // --- Food Suggestions ---
+    const allFoods = [
+      { emoji: '🍗', name: 'Chicken Breast (cooked)', portionG: 150, proteinPer100: 31, kcalPer100: 165 },
+      { emoji: '🥚', name: 'Whole Eggs', portionG: 100, proteinPer100: 13, kcalPer100: 155, note: '~2 large eggs' },
+      { emoji: '🐟', name: 'Tuna (canned, drained)', portionG: 100, proteinPer100: 30, kcalPer100: 130 },
+      { emoji: '🧀', name: 'Paneer / Cottage Cheese', portionG: 100, proteinPer100: 18, kcalPer100: 265 },
+      { emoji: '🥛', name: 'Full-Fat Milk', portionG: 250, proteinPer100: 3.4, kcalPer100: 61, note: '1 glass' },
+      { emoji: '🌿', name: 'Soya Chunks (cooked)', portionG: 100, proteinPer100: 52, kcalPer100: 345 },
+      { emoji: '🥜', name: 'Peanut Butter', portionG: 30, proteinPer100: 25, kcalPer100: 588, note: '2 tbsp' },
+      { emoji: '🫘', name: 'Rajma / Kidney Beans (cooked)', portionG: 150, proteinPer100: 8.7, kcalPer100: 127 },
+      { emoji: '🍦', name: 'Greek Yogurt', portionG: 150, proteinPer100: 10, kcalPer100: 59 },
+      { emoji: '🫙', name: 'Chia Seeds', portionG: 30, proteinPer100: 18, kcalPer100: 486, note: '2 tbsp' },
+      { emoji: '🌾', name: 'Quinoa (cooked)', portionG: 185, proteinPer100: 4.4, kcalPer100: 120, note: '1 cup cooked' },
+      { emoji: '🐟', name: 'Salmon Fillet', portionG: 150, proteinPer100: 25, kcalPer100: 208 },
+    ];
+
+    // Pick top foods where a realistic portion covers ~15–25% of their target
+    const target = protG;
+    let scored = allFoods.map(f => {
+      const portionProtein = Math.round(f.portionG * f.proteinPer100 / 100);
+      const portionKcal = Math.round(f.portionG * f.kcalPer100 / 100);
+      const pct = Math.round(portionProtein / target * 100);
+      return { ...f, portionProtein, portionKcal, pct };
+    }).sort((a, b) => b.portionProtein - a.portionProtein);
+
+    // Show top 5 foods most useful for this person's target
+    const top5 = scored.slice(0, 5);
+    let cumProt = 0;
+    let foodHtml = top5.map(f => {
+      cumProt += f.portionProtein;
+      const portionLabel = f.note ? f.note : f.portionG + 'g';
+      return `<div class="prot-meal-card">
+        <span class="prot-meal-icon">${f.emoji}</span>
+        <div class="prot-meal-info">
+          <div class="prot-meal-name">${f.name}</div>
+          <div class="prot-meal-detail">${portionLabel} · ${f.portionKcal} kcal · covers ${f.pct}% of your target</div>
+        </div>
+        <span class="prot-meal-badge">${f.portionProtein}g protein</span>
+      </div>`;
+    }).join('');
+
+    // Add a "how to hit target" summary line
+    foodHtml += `<div style="font-size:0.8rem;opacity:0.7;margin-top:0.75rem;line-height:1.6;">
+      💡 Eating the 5 portions above gives you <strong style="color:var(--gold);">${cumProt}g protein</strong> — 
+      ${cumProt >= target ? '✅ enough to meet' : 'close to'} your daily target of <strong style="color:var(--gold);">${target}g</strong>. 
+      Spread your meals every 3–4 hours for best absorption.
+    </div>`;
+
+    document.getElementById('protFoodList').innerHTML = foodHtml;
+    document.getElementById('protFoodSuggestions').style.display = 'block';
+
+    const el = document.getElementById('protResult');
+    el.classList.add('show');
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ===== SMART MEAL PLANNER =====
+  const MEAL_DB = {
+    all: {
+      breakfast: [
+        { name: 'Banana Oat Protein Pancakes', kcal: 420, p: 32, c: 55, f: 8 },
+        { name: 'Scrambled Eggs (3) with Avocado Toast', kcal: 480, p: 28, c: 38, f: 24 },
+        { name: 'Greek Yogurt Parfait with Granola & Berries', kcal: 390, p: 22, c: 52, f: 10 },
+        { name: 'Masala Omelette with Whole Wheat Toast', kcal: 440, p: 26, c: 42, f: 16 },
+        { name: 'Peanut Butter Banana Smoothie Bowl', kcal: 510, p: 20, c: 68, f: 18 },
+        { name: 'Poha with Peanuts & Vegetables', kcal: 360, p: 12, c: 58, f: 9 },
+        { name: 'Overnight Oats with Whey & Chia Seeds', kcal: 450, p: 30, c: 60, f: 11 },
+      ],
+      lunch: [
+        { name: 'Chicken Breast Rice Bowl with Veggies', kcal: 580, p: 48, c: 72, f: 10 },
+        { name: 'Rajma Chawal with Salad', kcal: 540, p: 24, c: 90, f: 8 },
+        { name: 'Tuna Quinoa Power Bowl', kcal: 500, p: 42, c: 60, f: 12 },
+        { name: 'Paneer Bhurji with Roti & Dal', kcal: 620, p: 34, c: 78, f: 18 },
+        { name: 'Egg Fried Brown Rice', kcal: 520, p: 28, c: 74, f: 14 },
+        { name: 'Chana Masala with Jeera Rice', kcal: 560, p: 22, c: 92, f: 10 },
+        { name: 'Grilled Fish Tacos with Beans', kcal: 490, p: 40, c: 62, f: 11 },
+      ],
+      dinner: [
+        { name: 'Baked Lemon Herb Chicken with Sweet Potato', kcal: 520, p: 46, c: 52, f: 12 },
+        { name: 'Dal Tadka with Brown Rice & Raita', kcal: 480, p: 22, c: 80, f: 9 },
+        { name: 'Salmon with Roasted Broccoli & Quinoa', kcal: 550, p: 44, c: 48, f: 20 },
+        { name: 'Egg Curry with Whole Wheat Roti', kcal: 490, p: 30, c: 62, f: 16 },
+        { name: 'Cottage Cheese Stir Fry with Soba Noodles', kcal: 460, p: 28, c: 64, f: 11 },
+        { name: 'Mutton Keema with Chapati & Salad', kcal: 580, p: 44, c: 56, f: 20 },
+        { name: 'Tofu & Vegetable Masala with Basmati Rice', kcal: 460, p: 22, c: 74, f: 12 },
+      ],
+      snack: [
+        { name: 'Boiled Eggs (2) + Banana', kcal: 220, p: 14, c: 28, f: 8 },
+        { name: 'Peanut Butter on Whole Wheat Toast', kcal: 280, p: 12, c: 30, f: 14 },
+        { name: 'Mixed Nuts & Dried Fruits (50g)', kcal: 290, p: 8, c: 24, f: 18 },
+        { name: 'Protein Shake with Milk', kcal: 250, p: 28, c: 22, f: 5 },
+        { name: 'Sprouts Chaat', kcal: 200, p: 10, c: 34, f: 2 },
+        { name: 'Cheese & Whole Grain Crackers', kcal: 260, p: 10, c: 28, f: 12 },
+        { name: 'Hummus with Vegetable Sticks', kcal: 180, p: 7, c: 22, f: 8 },
+      ]
+    },
+    veg: {
+      breakfast: [
+        { name: 'Masala Omelette with Whole Wheat Toast', kcal: 440, p: 26, c: 42, f: 16 },
+        { name: 'Paneer Paratha with Curd', kcal: 520, p: 24, c: 68, f: 16 },
+        { name: 'Greek Yogurt Parfait with Granola', kcal: 390, p: 22, c: 52, f: 10 },
+        { name: 'Besan Chilla with Mint Chutney', kcal: 360, p: 18, c: 48, f: 10 },
+        { name: 'Overnight Oats with Chia & Almond Butter', kcal: 450, p: 18, c: 60, f: 16 },
+        { name: 'Idli (4) with Sambar & Coconut Chutney', kcal: 380, p: 14, c: 70, f: 6 },
+        { name: 'Egg Bhurji Sandwich (Whole Wheat)', kcal: 430, p: 24, c: 50, f: 14 },
+      ],
+      lunch: [
+        { name: 'Rajma Chawal with Salad', kcal: 540, p: 24, c: 90, f: 8 },
+        { name: 'Paneer Bhurji with Roti & Dal', kcal: 620, p: 34, c: 78, f: 18 },
+        { name: 'Chana Masala with Jeera Rice', kcal: 560, p: 22, c: 92, f: 10 },
+        { name: 'Soya Chunks Curry with Brown Rice', kcal: 580, p: 36, c: 80, f: 10 },
+        { name: 'Egg Fried Brown Rice', kcal: 520, p: 28, c: 74, f: 14 },
+        { name: 'Tofu Tikka Masala with Roti', kcal: 500, p: 28, c: 64, f: 16 },
+        { name: 'Lentil Soup with Quinoa & Vegetable Salad', kcal: 480, p: 26, c: 76, f: 8 },
+      ],
+      dinner: [
+        { name: 'Dal Tadka with Brown Rice & Raita', kcal: 480, p: 22, c: 80, f: 9 },
+        { name: 'Paneer Tikka with Roti & Salad', kcal: 540, p: 32, c: 58, f: 20 },
+        { name: 'Cottage Cheese Stir Fry with Noodles', kcal: 460, p: 28, c: 64, f: 11 },
+        { name: 'Tofu & Vegetable Masala with Basmati Rice', kcal: 460, p: 22, c: 74, f: 12 },
+        { name: 'Soya Keema with Chapati', kcal: 500, p: 32, c: 62, f: 14 },
+        { name: 'Palak Paneer with 2 Rotis', kcal: 490, p: 26, c: 56, f: 18 },
+        { name: 'Mixed Dal with Jeera Rice & Curd', kcal: 470, p: 22, c: 78, f: 8 },
+      ],
+      snack: [
+        { name: 'Boiled Eggs (2) + Banana', kcal: 220, p: 14, c: 28, f: 8 },
+        { name: 'Peanut Butter on Whole Wheat Toast', kcal: 280, p: 12, c: 30, f: 14 },
+        { name: 'Mixed Nuts & Dried Fruits (50g)', kcal: 290, p: 8, c: 24, f: 18 },
+        { name: 'Sprouts Chaat', kcal: 200, p: 10, c: 34, f: 2 },
+        { name: 'Cheese & Whole Grain Crackers', kcal: 260, p: 10, c: 28, f: 12 },
+        { name: 'Roasted Makhana (Fox Nuts)', kcal: 180, p: 6, c: 36, f: 2 },
+        { name: 'Hummus with Vegetable Sticks', kcal: 180, p: 7, c: 22, f: 8 },
+      ]
+    },
+    vegan: {
+      breakfast: [
+        { name: 'Peanut Butter Banana Smoothie Bowl', kcal: 480, p: 16, c: 72, f: 18 },
+        { name: 'Besan Chilla with Avocado & Salsa', kcal: 380, p: 18, c: 50, f: 14 },
+        { name: 'Overnight Oats (Oat Milk) with Berries & Chia', kcal: 420, p: 14, c: 68, f: 12 },
+        { name: 'Tofu Scramble with Whole Wheat Toast', kcal: 400, p: 22, c: 44, f: 16 },
+        { name: 'Idli (4) with Sambar', kcal: 360, p: 12, c: 68, f: 4 },
+        { name: 'Poha with Peanuts & Veggies', kcal: 360, p: 12, c: 58, f: 9 },
+        { name: 'Chia Pudding with Coconut Milk & Mango', kcal: 350, p: 10, c: 52, f: 14 },
+      ],
+      lunch: [
+        { name: 'Chana Masala with Jeera Rice', kcal: 560, p: 22, c: 92, f: 10 },
+        { name: 'Soya Chunks Curry with Brown Rice', kcal: 560, p: 36, c: 80, f: 9 },
+        { name: 'Tofu Tikka Masala with Roti', kcal: 500, p: 28, c: 64, f: 16 },
+        { name: 'Rajma Chawal with Salad', kcal: 530, p: 22, c: 90, f: 6 },
+        { name: 'Lentil Soup with Quinoa', kcal: 460, p: 24, c: 74, f: 6 },
+        { name: 'Falafel Bowl with Hummus & Pita', kcal: 520, p: 20, c: 78, f: 18 },
+        { name: 'Edamame & Brown Rice Buddha Bowl', kcal: 490, p: 22, c: 76, f: 14 },
+      ],
+      dinner: [
+        { name: 'Dal Tadka with Brown Rice', kcal: 460, p: 20, c: 80, f: 7 },
+        { name: 'Tofu & Vegetable Curry with Roti', kcal: 460, p: 22, c: 66, f: 14 },
+        { name: 'Soya Keema with Chapati & Salad', kcal: 490, p: 30, c: 62, f: 13 },
+        { name: 'Mixed Dal with Jeera Rice', kcal: 450, p: 20, c: 76, f: 7 },
+        { name: 'Palak Tofu with 2 Rotis', kcal: 460, p: 22, c: 58, f: 16 },
+        { name: 'Jackfruit Biryani with Raita', kcal: 500, p: 14, c: 92, f: 10 },
+        { name: 'Chickpea Stir Fry with Quinoa', kcal: 470, p: 22, c: 72, f: 12 },
+      ],
+      snack: [
+        { name: 'Peanut Butter on Whole Wheat Toast', kcal: 280, p: 12, c: 30, f: 14 },
+        { name: 'Mixed Nuts & Dried Fruits (50g)', kcal: 290, p: 8, c: 24, f: 18 },
+        { name: 'Sprouts Chaat', kcal: 200, p: 10, c: 34, f: 2 },
+        { name: 'Roasted Makhana (Fox Nuts)', kcal: 180, p: 6, c: 36, f: 2 },
+        { name: 'Hummus with Vegetable Sticks', kcal: 180, p: 7, c: 22, f: 8 },
+        { name: 'Banana with Almond Butter', kcal: 250, p: 6, c: 36, f: 10 },
+        { name: 'Roasted Chickpeas (Masala)', kcal: 200, p: 10, c: 32, f: 4 },
+      ]
+    }
+  };
+
+  const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+  function pick(arr, idx) { return arr[idx % arr.length]; }
+
+  function generateMealPlan() {
+    const w = parseFloat(document.getElementById('planWeight').value);
+    const h = parseFloat(document.getElementById('planHeight').value);
+    const age = parseFloat(document.getElementById('planAge').value);
+    if (!w || !h || !age) { alert('Please fill in weight, height, and age.'); return; }
+    const act = parseFloat(document.querySelector('input[name="planAct"]:checked').value);
+    const diet = document.querySelector('input[name="planDiet"]:checked').value;
+    const dbKey = diet === 'all' ? 'all' : (diet === 'vegan' ? 'vegan' : 'veg');
+    const db = MEAL_DB[dbKey];
+    // TDEE + surplus for weight gain
+    const bmr = 10 * w + 6.25 * h - 5 * age + 5;
+    const tdee = Math.round(bmr * act);
+    const targetKcal = tdee + 400;
+    const targetProt = Math.round(w * 1.8);
+    const targetCarb = Math.round((targetKcal - targetProt * 4 - Math.round(targetKcal * 0.25 / 9) * 9) / 4);
+    const targetFat = Math.round(targetKcal * 0.25 / 9);
+    document.getElementById('planKcal').textContent = targetKcal;
+    document.getElementById('planProtG').textContent = targetProt;
+    document.getElementById('planCarbG').textContent = targetCarb;
+    document.getElementById('planFatG').textContent = targetFat;
+    let html = '';
+    DAYS.forEach((day, i) => {
+      const bf = pick(db.breakfast, i);
+      const lu = pick(db.lunch, i + 1);
+      const sn = pick(db.snack, i);
+      const dn = pick(db.dinner, i + 2);
+      const totalKcal = bf.kcal + lu.kcal + sn.kcal + dn.kcal;
+      const totalP = bf.p + lu.p + sn.p + dn.p;
+      html += `<div class="plan-day-row">
+        <div class="plan-day-head" onclick="toggleDay(this)">
+          <span>${day}</span>
+          <span style="font-size:0.82rem;color:var(--text-muted);">${totalKcal} kcal · ${totalP}g protein ▾</span>
+        </div>
+        <div class="plan-day-meals">
+          <div class="plan-meal-item"><span class="meal-time-badge">Breakfast</span><div><div class="plan-meal-name">${bf.name}</div><div class="plan-meal-meta">${bf.kcal} kcal · ${bf.p}g protein · ${bf.c}g carbs · ${bf.f}g fat</div></div></div>
+          <div class="plan-meal-item"><span class="meal-time-badge lunch">Lunch</span><div><div class="plan-meal-name">${lu.name}</div><div class="plan-meal-meta">${lu.kcal} kcal · ${lu.p}g protein · ${lu.c}g carbs · ${lu.f}g fat</div></div></div>
+          <div class="plan-meal-item"><span class="meal-time-badge snack">Snack</span><div><div class="plan-meal-name">${sn.name}</div><div class="plan-meal-meta">${sn.kcal} kcal · ${sn.p}g protein · ${sn.c}g carbs · ${sn.f}g fat</div></div></div>
+          <div class="plan-meal-item"><span class="meal-time-badge dinner">Dinner</span><div><div class="plan-meal-name">${dn.name}</div><div class="plan-meal-meta">${dn.kcal} kcal · ${dn.p}g protein · ${dn.c}g carbs · ${dn.f}g fat</div></div></div>
+        </div>
+      </div>`;
+    });
+    document.getElementById('planDays').innerHTML = html;
+    document.getElementById('plannerSetup').style.display = 'none';
+    const gen = document.getElementById('plannerGenerated');
+    gen.classList.add('show');
+    gen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function toggleDay(el) {
+    const meals = el.nextElementSibling;
+    meals.classList.toggle('open');
+  }
+
+  function resetPlan() {
+    document.getElementById('plannerSetup').style.display = 'block';
+    document.getElementById('plannerGenerated').classList.remove('show');
+  }
+
+  // ===== BUDGET DIET PLANNER =====
+  const GROCERY_DB = {
+    all: [
+      { emoji: '🍗', name: 'Chicken Breast (500g)', qty: '500g', pricePer: 160, protein: 155, tag: 'protein' },
+      { emoji: '🥚', name: 'Eggs (12 pack)', qty: '12 eggs', pricePer: 80, protein: 78, tag: 'protein' },
+      { emoji: '🌾', name: 'Brown Rice (1kg)', qty: '1 kg', pricePer: 90, protein: 26, tag: 'carb' },
+      { emoji: '🫘', name: 'Toor Dal (500g)', qty: '500g', pricePer: 55, protein: 52, tag: 'protein' },
+      { emoji: '🥛', name: 'Full-Fat Milk (1L)', qty: '1 litre', pricePer: 65, protein: 32, tag: 'protein' },
+      { emoji: '🥜', name: 'Peanut Butter (500g)', qty: '500g', pricePer: 120, protein: 125, tag: 'fat' },
+      { emoji: '🥦', name: 'Mixed Vegetables (500g)', qty: '500g', pricePer: 50, protein: 8, tag: 'veg' },
+      { emoji: '🍌', name: 'Bananas (dozen)', qty: '12 bananas', pricePer: 40, protein: 4, tag: 'carb' },
+      { emoji: '🌿', name: 'Soya Chunks (500g)', qty: '500g', pricePer: 70, protein: 175, tag: 'protein' },
+      { emoji: '🍞', name: 'Whole Wheat Bread', qty: '400g loaf', pricePer: 45, protein: 36, tag: 'carb' },
+    ],
+    veg: [
+      { emoji: '🧀', name: 'Paneer (200g)', qty: '200g', pricePer: 80, protein: 36, tag: 'protein' },
+      { emoji: '🥚', name: 'Eggs (12 pack)', qty: '12 eggs', pricePer: 80, protein: 78, tag: 'protein' },
+      { emoji: '🌾', name: 'Brown Rice (1kg)', qty: '1 kg', pricePer: 90, protein: 26, tag: 'carb' },
+      { emoji: '🫘', name: 'Toor Dal (500g)', qty: '500g', pricePer: 55, protein: 52, tag: 'protein' },
+      { emoji: '🥛', name: 'Full-Fat Milk (1L)', qty: '1 litre', pricePer: 65, protein: 32, tag: 'protein' },
+      { emoji: '🥜', name: 'Peanut Butter (500g)', qty: '500g', pricePer: 120, protein: 125, tag: 'fat' },
+      { emoji: '🥦', name: 'Mixed Vegetables (500g)', qty: '500g', pricePer: 50, protein: 8, tag: 'veg' },
+      { emoji: '🍌', name: 'Bananas (dozen)', qty: '12 bananas', pricePer: 40, protein: 4, tag: 'carb' },
+      { emoji: '🌿', name: 'Soya Chunks (500g)', qty: '500g', pricePer: 70, protein: 175, tag: 'protein' },
+      { emoji: '🍞', name: 'Whole Wheat Bread', qty: '400g loaf', pricePer: 45, protein: 36, tag: 'carb' },
+    ]
+  };
+
+  function calculateBudgetDiet() {
+    const budget = parseFloat(document.getElementById('budgetAmount').value);
+    const people = parseInt(document.getElementById('budgetPeople').value) || 1;
+    if (!budget || budget < 200) { alert('Please enter a budget of at least ₹200.'); return; }
+    const goal = document.querySelector('input[name="budgetGoal"]:checked').value;
+    const dietPref = document.querySelector('input[name="budgetDiet"]:checked').value;
+    const dbKey = dietPref === 'veg' ? 'veg' : 'all';
+    const groceries = GROCERY_DB[dbKey];
+    const perPersonBudget = budget / people;
+    // Smart allocation: spend ~85% of budget
+    const spendBudget = Math.round(perPersonBudget * 0.85 * people);
+    // Pick items greedily by protein/rupee value
+    let totalSpend = 0, totalProtein = 0;
+    let selected = [];
+    const sorted = [...groceries].sort((a, b) => (b.protein / b.pricePer) - (a.protein / a.pricePer));
+    for (const item of sorted) {
+      if (totalSpend + item.pricePer * people <= spendBudget) {
+        selected.push({ ...item, totalCost: item.pricePer * people });
+        totalSpend += item.pricePer * people;
+        totalProtein += (item.protein / 7) * people; // weekly protein per person per day approx
+      }
+    }
+    const saved = budget - totalSpend;
+    const dailyCost = Math.round(totalSpend / 7);
+    const dailyProtein = Math.round(totalProtein);
+    document.getElementById('bTotalSpend').textContent = '₹' + totalSpend;
+    document.getElementById('bSaved').textContent = '₹' + Math.round(saved);
+    document.getElementById('bDailyCost').textContent = '₹' + dailyCost;
+    document.getElementById('bProtein').textContent = dailyProtein + 'g';
+    document.getElementById('bGroceryTotal').textContent = '₹' + totalSpend + ' total';
+    let itemsHtml = '';
+    selected.forEach(item => {
+      itemsHtml += `<div class="grocery-item">
+        <span class="grocery-emoji">${item.emoji}</span>
+        <div class="grocery-name">${item.name}</div>
+        <div class="grocery-qty">${item.qty}</div>
+        <div class="grocery-price">₹${item.totalCost}</div>
+      </div>`;
+    });
+    document.getElementById('groceryItems').innerHTML = itemsHtml;
+    let tipText = '';
+    if (goal === 'gain') {
+      tipText = `💡 Weight Gain Tip: With this grocery list you can hit ${dailyProtein}g+ protein per day. Cook in bulk on Sundays to save time and money. Add full-fat milk, peanut butter, and bananas between meals to boost calorie intake easily. Aim to eat every 3–4 hours.`;
+    } else if (goal === 'lose') {
+      tipText = `💡 Fat Loss Tip: Focus on high-volume, low-calorie items like vegetables and lentils to stay full. Prioritise eggs and dal for protein. Skip processed foods and cook at home to stay within budget while cutting calories.`;
+    } else {
+      tipText = `💡 Maintenance Tip: This balanced shopping list covers all major food groups within budget. Prep your proteins on Sunday, store cooked grains in the fridge, and mix and match meals through the week for variety without overspending.`;
+    }
+    document.getElementById('budgetTip').innerHTML = `<strong>💡 Smart Tip for Your Goal</strong>${tipText}`;
+    const resultEl = document.getElementById('budgetResult');
+    resultEl.classList.add('show');
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+</body>
+</html>
