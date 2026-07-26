@@ -28,11 +28,7 @@ nutrilife is a responsive health and nutrition website built using HTML, CSS, an
 ## Usage
 To use the application, simply open the `nutrilife-enhanced (2).html` file in your preferred web browser. The website will load, allowing you to navigate through its features and content.
 
-## Screenshots
-Screenshots can be found in the `assets/screenshots` directory.
 
-## Demo
-A demo video can be found at the following link: [Watch Demo](assets/demo.gif)
 
 ## Future Improvements
 - Implement additional interactive features using JavaScript
